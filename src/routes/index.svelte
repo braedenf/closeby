@@ -2,4 +2,6 @@
 	import Auth from '$lib/components/Auth.svelte';
 </script>
 
-<Auth />
+<main class="pt-20">
+	<Auth />
+</main>

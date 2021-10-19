@@ -4,6 +4,6 @@
 </script>
 
 <input
-	class="border-2 border-gray-200 p-3 rounded-md shadow-sm focus:ring-2 focus:outline-none focus:ring-indigo-600 focus:ring-offset-2"
+	class="{$$props.class} border-2 border-gray-200 p-3 rounded-md shadow-sm focus:ring-2 focus:outline-none focus:ring-primary-dark focus:ring-offset-2"
 	{type}
 />
