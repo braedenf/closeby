@@ -1,19 +1,33 @@
 <script lang="ts">
+	import {
+		useForm,
+		HintGroup,
+		Hint,
+		validators,
+		minLength,
+		required,
+		email
+	} from 'svelte-use-form';
 	import SocialButton from './ui/SocialButton.svelte';
-	import FormInput from './ui/FormInput.svelte';
 	import Button from './ui/Button.svelte';
 	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { passwordMatch } from '$lib/customValidators';
 
 	export let supabaseClient: SupabaseClient;
 
 	async function signUp() {
+		const email = $form.email.value;
+		const password = $form.password.value;
+
 		const { user, error } = await supabaseClient.auth.signUp({
-			email: 'braedenleefoster@gmail.com',
-			password: 'test@12345'
+			email,
+			password
 		});
 
 		console.log(user, error);
 	}
+
+	const form = useForm();
 </script>
 
 <!-- Title -->
@@ -21,37 +35,89 @@
 	<h2 class="font-display text-gray-800 dark:text-dark-accent font-bold text-2xl mt-4 mb-6">
 		Sign Up
 	</h2>
+
 	<!-- Form Inputs -->
-	<div class="flex flex-col gap-6 mb-12">
-		<!-- First Name -->
-
-		<!-- Last Name -->
-
+	<form on:submit|preventDefault use:form class="flex flex-col gap-6 mb-12">
 		<!-- Email -->
 		<div class="flex flex-col gap-2">
 			<label
 				class="font-body text-gray-800 font-semibold text-sm dark:text-dark-accent"
 				for="EmailInput">Email</label
 			>
-			<FormInput type="email" placeholder="Enter Username or Email" />
+			<input
+				class="form-input font-body"
+				type="email"
+				name="email"
+				placeholder="Enter Email"
+				use:validators={[required, email]}
+			/>
+			<HintGroup for="email">
+				<Hint on="required" class="ml-2 text-red-500 font-body text-sm">This field is required</Hint
+				>
+				<Hint on="email" hideWhenRequired class="ml-2 text-red-500 font-body text-sm"
+					>Email is not valid</Hint
+				>
+			</HintGroup>
 		</div>
+
 		<!-- Password -->
 		<div class="flex flex-col gap-2">
 			<label
 				class="font-body text-gray-800 font-semibold text-sm dark:text-dark-accent"
-				for="PasswordInput">Password</label
+				for="password">Password</label
 			>
-			<FormInput class="font-body" type="password" placeholder="Enter Password" />
+			<input
+				class="font-body form-input"
+				type="password"
+				name="password"
+				placeholder="Enter Password"
+				use:validators={[required, minLength(6)]}
+			/>
+			<HintGroup for="password">
+				<Hint on="required" class="ml-2 text-red-500 font-body text-sm">This field is required</Hint
+				>
+				<Hint class="ml-2 text-red-500 font-body text-sm" on="minLength" hideWhenRequired let:value
+					>This field must have at least {value} characters</Hint
+				>
+			</HintGroup>
 		</div>
 
-		<!-- Sign in CTA -->
+		<!-- Form Confirmation -->
+		<div class="flex flex-col gap-2">
+			<label
+				class="font-body text-gray-800 font-semibold text-sm dark:text-dark-accent"
+				for="passwordConfirmation">Password Confirmation</label
+			>
+			<input
+				class="font-body form-input"
+				type="password"
+				name="passwordConfirmation"
+				placeholder="Enter Password"
+				use:validators={[required, passwordMatch]}
+			/>
+			<HintGroup for="passwordConfirmation">
+				<Hint on="required" class="ml-2 text-red-500 font-body text-sm">This field is required</Hint
+				>
+				<Hint on="passwordMatch" hideWhenRequired class="ml-2 text-red-500 font-body text-sm"
+					>Passwords do not match</Hint
+				>
+			</HintGroup>
+		</div>
+
+		<!-- SignUp Submit CTA -->
 		<div class="flex flex-col sm:flex-row sm:items-center justify-center gap-4">
-			<Button type="submit" on:click={signUp} class="font-body font-medium" text="Sign Up" />
+			<Button
+				disabled={!$form.valid}
+				type="submit"
+				on:click={signUp}
+				class="font-body font-medium"
+				text="Sign Up"
+			/>
 		</div>
 		<p class="font-body text-xs text-center font-medium">
 			By signing up you agree to Terms of Service & Privacy Policy.
 		</p>
-	</div>
+	</form>
 
 	<!-- Sign in with a social provider -->
 	<div class="flex flex-col gap-2 justify-center items-center mb-6">
