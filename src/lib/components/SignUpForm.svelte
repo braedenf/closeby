@@ -27,6 +27,12 @@
 		console.log(user, error);
 	}
 
+	async function signInWithGoogle() {
+		const { user, session, error } = await supabaseClient.auth.signIn({
+			provider: 'google'
+		});
+	}
+
 	const form = useForm();
 </script>
 
@@ -124,7 +130,7 @@
 		<label class="font-body text-xs text-center font-semibold" for="SocialButtons"
 			>Or sign up using:</label
 		>
-		<SocialButton text="Sign up with Google">
+		<SocialButton on:click={signInWithGoogle} text="Sign up with Google">
 			<!-- Google Icon -->
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
