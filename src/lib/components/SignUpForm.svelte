@@ -37,7 +37,7 @@
 </script>
 
 <!-- Title -->
-<div class="mx-2 sm:mx-12">
+<div class="mx-2 sm:mx-12 dark:bg-dark-primary">
 	<h2 class="font-display text-gray-800 dark:text-dark-accent font-bold text-2xl mt-4 mb-6">
 		Sign Up
 	</h2>
@@ -58,9 +58,9 @@
 				use:validators={[required, email]}
 			/>
 			<HintGroup for="email">
-				<Hint on="required" class="ml-2 text-red-500 font-body text-sm">This field is required</Hint
+				<Hint on="required" class="ml-2 text-red-400 font-body text-sm">This field is required</Hint
 				>
-				<Hint on="email" hideWhenRequired class="ml-2 text-red-500 font-body text-sm"
+				<Hint on="email" hideWhenRequired class="ml-2 text-red-400 font-body text-sm"
 					>Email is not valid</Hint
 				>
 			</HintGroup>
@@ -80,9 +80,9 @@
 				use:validators={[required, minLength(6)]}
 			/>
 			<HintGroup for="password">
-				<Hint on="required" class="ml-2 text-red-500 font-body text-sm">This field is required</Hint
+				<Hint on="required" class="ml-2 text-red-400 font-body text-sm">This field is required</Hint
 				>
-				<Hint class="ml-2 text-red-500 font-body text-sm" on="minLength" hideWhenRequired let:value
+				<Hint class="ml-2 text-red-400 font-body text-sm" on="minLength" hideWhenRequired let:value
 					>This field must have at least {value} characters</Hint
 				>
 			</HintGroup>
@@ -102,9 +102,9 @@
 				use:validators={[required, passwordMatch]}
 			/>
 			<HintGroup for="passwordConfirmation">
-				<Hint on="required" class="ml-2 text-red-500 font-body text-sm">This field is required</Hint
+				<Hint on="required" class="ml-2 text-red-400 font-body text-sm">This field is required</Hint
 				>
-				<Hint on="passwordMatch" hideWhenRequired class="ml-2 text-red-500 font-body text-sm"
+				<Hint on="passwordMatch" hideWhenRequired class="ml-2 text-red-400 font-body text-sm"
 					>Passwords do not match</Hint
 				>
 			</HintGroup>
@@ -120,15 +120,16 @@
 				text="Sign Up"
 			/>
 		</div>
-		<p class="font-body text-xs text-center font-medium">
+		<p class="font-body text-xs text-center font-medium dark:text-dark-accent">
 			By signing up you agree to Terms of Service & Privacy Policy.
 		</p>
 	</form>
 
 	<!-- Sign in with a social provider -->
 	<div class="flex flex-col gap-2 justify-center items-center mb-6">
-		<label class="font-body text-xs text-center font-semibold" for="SocialButtons"
-			>Or sign up using:</label
+		<label
+			class="font-body text-xs text-center font-semibold dark:text-dark-accent"
+			for="SocialButtons">Or sign up using:</label
 		>
 		<SocialButton on:click={signInWithGoogle} text="Sign up with Google">
 			<!-- Google Icon -->

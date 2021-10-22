@@ -4,8 +4,8 @@
 
 <button
 	on:click
-	class="px-8 py-3 mb-4 border-2 bg-white border-gray-500 hover:border-primary-light outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark rounded-md
-transition duration-200"
+	class="px-8 py-3 mb-4 border-2 bg-white dark:bg-dark-secondary dark:hover:bg-dark-primary border-gray-500 hover:border-primary-light outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-dark rounded-md
+transition duration-200 dark:text-dark-accent"
 >
 	<span class="flex items-center">
 		<slot />
