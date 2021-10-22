@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { session } from '$app/stores';
 	import {
 		useForm,
 		HintGroup,
@@ -19,18 +20,28 @@
 		const email = $form.email.value;
 		const password = $form.password.value;
 
-		const { user, error } = await supabaseClient.auth.signUp({
+		const {
+			user,
+			session: mySession,
+			error
+		} = await supabaseClient.auth.signUp({
 			email,
 			password
 		});
 
-		console.log(user, error);
+		$session = mySession;
 	}
 
 	async function signInWithGoogle() {
-		const { user, session, error } = await supabaseClient.auth.signIn({
+		const {
+			user,
+			session: mySession,
+			error
+		} = await supabaseClient.auth.signIn({
 			provider: 'google'
 		});
+
+		$session = mySession;
 	}
 
 	const form = useForm();
