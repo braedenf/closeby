@@ -1,7 +1,7 @@
 <script>
-	import Auth from '$lib/components/Auth.svelte';
+	import AuthModal from '$lib/components/ui/AuthModal.svelte';
 </script>
 
-<Auth>
+<AuthModal>
 	<h1>Enter Email</h1>
-</Auth>
+</AuthModal>

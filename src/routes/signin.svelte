@@ -1,5 +1,16 @@
+<script lang="ts" context="module">
+	export async function load({ session }) {
+		if (session) {
+			return {
+				status: 302,
+				redirect: '/'
+			};
+		}
+		return {};
+	}
+</script>
+
 <script lang="ts">
-	import { session } from '$app/stores';
 	import {
 		useForm,
 		HintGroup,
@@ -12,35 +23,25 @@
 	import SocialButton from '$lib/components/ui/SocialButton.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import AuthModal from '$lib/components/ui/AuthModal.svelte';
+	import type { AuthResponse } from '$lib/types';
 	import { supabaseClient } from '$lib/supabaseClient';
 
 	const form = useForm();
 
-	async function signIn() {
-		const email = $form.email.value;
-		const password = $form.password.value;
-
-		const {
-			user,
-			session: mySession,
-			error
-		} = await supabaseClient.auth.signIn({
-			email,
-			password
+	async function signIn(e) {
+		const response = await fetch('/api/signin', {
+			method: 'post',
+			body: new FormData(e.target)
 		});
-		$session = mySession;
+
+		if (response.ok) window.location.href = '/';
+		else alert(await response.text());
 	}
 
 	async function signInWithGoogle() {
-		const {
-			user,
-			session: mySession,
-			error
-		} = await supabaseClient.auth.signIn({
+		const { user, session, error }: AuthResponse = await supabaseClient.auth.signIn({
 			provider: 'google'
 		});
-
-		$session = mySession;
 	}
 </script>
 
@@ -53,7 +54,7 @@
 			</h2>
 
 			<!-- Form Inputs -->
-			<form on:submit|preventDefault use:form class="flex flex-col gap-6 mb-12">
+			<form on:submit|preventDefault={signIn} use:form class="flex flex-col gap-6 mb-12">
 				<!-- Email -->
 				<div class="flex flex-col gap-2">
 					<label
@@ -108,12 +109,11 @@
 					<Button
 						disabled={!$form.valid}
 						type="submit"
-						on:click={signIn}
 						class="font-body font-medium"
 						text="Sign In"
 					/>
 					<a
-						class="font-body font-semibold text-sm text-gray-800 hover:underline"
+						class="font-body font-semibold text-sm text-gray-800 dark:text-dark-accent dark:hover:text-dark-accent-light hover:underline"
 						href="/forgot-password">Forgot Password?</a
 					>
 				</div>
@@ -122,8 +122,13 @@
 				</p>
 
 				<div class="flex flex-col gap-2 text-center">
-					<label class="font-body font-bold" for="signUp">Don't have an account?</label>
-					<a class="font-body font-semibold hover:underline" href="/signup">Sign Up</a>
+					<label class="font-body font-bold dark:text-dark-accent" for="signUp"
+						>Don't have an account?</label
+					>
+					<a
+						class="font-body font-semibold hover:underline dark:text-dark-accent dark:hover:text-dark-accent-light"
+						href="/signup">Sign Up</a
+					>
 				</div>
 			</form>
 

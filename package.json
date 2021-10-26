@@ -17,6 +17,7 @@
 		"@typescript-eslint/eslint-plugin": "^4.31.1",
 		"@typescript-eslint/parser": "^4.31.1",
 		"autoprefixer": "^10.3.7",
+		"cookie": "^0.4.1",
 		"cssnano": "^5.0.8",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.3.0",
@@ -35,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@supabase/supabase-js": "^1.24.0"
+		"@supabase/supabase-js": "^1.24.0",
+		"@types/cookie": "^0.4.1"
 	}
 }

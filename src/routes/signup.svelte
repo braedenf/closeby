@@ -1,5 +1,16 @@
+<script lang="ts" context="module">
+	export async function load({ session }) {
+		if (session) {
+			return {
+				status: 302,
+				redirect: '/'
+			};
+		}
+		return {};
+	}
+</script>
+
 <script lang="ts">
-	import { session } from '$app/stores';
 	import {
 		useForm,
 		HintGroup,
@@ -13,34 +24,23 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import { passwordMatch } from '$lib/customValidators';
 	import AuthModal from '$lib/components/ui/AuthModal.svelte';
+	import type { AuthResponse } from '$lib/types';
 	import { supabaseClient } from '$lib/supabaseClient';
 
-	async function signUp() {
-		const email = $form.email.value;
-		const password = $form.password.value;
-
-		const {
-			user,
-			session: mySession,
-			error
-		} = await supabaseClient.auth.signUp({
-			email,
-			password
+	async function signUp(e) {
+		const response = await fetch('/api/signup', {
+			method: 'post',
+			body: new FormData(e.target)
 		});
 
-		$session = mySession;
+		if (response.ok) window.location.href = '/';
+		else alert(await response.text());
 	}
 
 	async function signInWithGoogle() {
-		const {
-			user,
-			session: mySession,
-			error
-		} = await supabaseClient.auth.signIn({
+		const { user, session, error }: AuthResponse = await supabaseClient.auth.signIn({
 			provider: 'google'
 		});
-
-		$session = mySession;
 	}
 
 	const form = useForm();
@@ -55,7 +55,7 @@
 			</h2>
 
 			<!-- Form Inputs -->
-			<form on:submit|preventDefault use:form class="flex flex-col gap-6 mb-12">
+			<form on:submit|preventDefault={signUp} use:form class="flex flex-col gap-6 mb-12">
 				<!-- Email -->
 				<div class="flex flex-col gap-2">
 					<label
@@ -133,7 +133,6 @@
 					<Button
 						disabled={!$form.valid}
 						type="submit"
-						on:click={signUp}
 						class="font-body font-medium"
 						text="Sign Up"
 					/>

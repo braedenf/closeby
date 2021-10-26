@@ -1,3 +1,15 @@
+<script lang="ts" context="module">
+	export async function load({ session }) {
+		if (!session) {
+			return {
+				status: 302,
+				redirect: '/signin'
+			};
+		}
+		return {};
+	}
+</script>
+
 <script lang="ts">
 </script>
 
